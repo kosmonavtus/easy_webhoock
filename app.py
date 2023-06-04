@@ -7,8 +7,10 @@ from hmac_signatuer import make_hmac_signature, generate_secret_key, verify_hmac
 app = FastAPI()
 
 
-gitlab_token = get_config()['GITLAB_TOKEN']
-SECRET_KEY_B = generate_secret_key()
+B_SECRET_KEY = generate_secret_key()
+
+
+exepted_token = make_hmac_signature(B_SECRET_KEY, get_config()['GITLAB_TOKEN'])
 
 
 @app.post("/webhook", status_code=http.HTTPStatus.ACCEPTED)
@@ -16,7 +18,7 @@ async def webhook(requset: Request, response: Response) -> dict:
     received_token = requset.headers.get("X-gitlab-Token")
     if not received_token:
         raise HTTPException(status_code=http.HTTPStatus.UNAUTHORIZED, detail='Missing token')
-    if not verify_hmac(received_token, gitlab_token, SECRET_KEY_B):
+    if not verify_hmac(received_token, exepted_token):
         raise HTTPException(status_code=http.HTTPStatus.UNAUTHORIZED, detail="Invalid token")
     return {"Result": "Done"}
 
@@ -28,5 +30,4 @@ def get_token(request: Request) -> dict:
         raise HTTPException(
             status_code=http.HTTPStatus.UNAUTHORIZED,
             detail="Unauthorized")
-    token = make_hmac_signature(SECRET_KEY_B, gitlab_token)
-    return {"token": token}
+    return {"token": exepted_token}

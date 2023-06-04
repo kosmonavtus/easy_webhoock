@@ -12,6 +12,5 @@ def generate_secret_key() -> bytes:
     return secret_key
 
 
-def verify_hmac(received_token: str, expected_token: str, secret_key_b: bytes) -> bool:
-    expected_token = make_hmac_signature(secret_key_b, expected_token)
+def verify_hmac(received_token: str, expected_token: str) -> bool:
     return hmac.compare_digest(received_token, expected_token)
