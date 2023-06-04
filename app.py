@@ -22,7 +22,7 @@ async def webhook(requset: Request, response: Response) -> dict:
 
 
 @app.get("/token")
-def get_token(request: Request):
+def get_token(request: Request) -> dict:
     client_ip = request.client.host
     if client_ip != "127.0.0.1":
         raise HTTPException(
