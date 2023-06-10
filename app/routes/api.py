@@ -11,14 +11,14 @@ from config import Settings
 
 
 is_viewed = False
-setting = Settings()
+setting = Settings()  # type: ignore
 exepted_token = make_hmac_signature(generate_secret_key(), setting.gitlab_token)
 
 
 whrouter = APIRouter()
 
 
-@whrouter.post("/webhook", status_code=http.HTTPStatus.ACCEPTED)
+@whrouter.post("/webhook")
 def webhook(requset: Request, response: Response) -> dict:
     received_token = requset.headers.get("X-gitlab-Token")
     if not received_token:
@@ -30,6 +30,7 @@ def webhook(requset: Request, response: Response) -> dict:
         response.status_code = 202
         return git_pull(setting.git_work_directory)
     except Exception as e:
+        response.status_code = 500
         return {"Exception": e}
 
 
