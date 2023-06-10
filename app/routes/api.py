@@ -15,7 +15,7 @@ setting = Settings()
 exepted_token = make_hmac_signature(generate_secret_key(), setting.gitlab_token)
 
 
-whrouter = APIRouter
+whrouter = APIRouter()
 
 
 @whrouter.post("/webhook", status_code=http.HTTPStatus.ACCEPTED)
