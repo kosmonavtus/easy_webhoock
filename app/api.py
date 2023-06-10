@@ -3,17 +3,16 @@ from fastapi import APIRouter
 from fastapi import Request
 from fastapi import Response
 from fastapi import HTTPException
-from app.config import get_config
 from hmac_signatuer import verify_hmac
 from hmac_signatuer import generate_secret_key
 from hmac_signatuer import make_hmac_signature
 from gitsync import git_pull
+from config import Settings
 
 
 is_viewed = False
-B_SECRET_KEY = generate_secret_key()
-exepted_token = make_hmac_signature(B_SECRET_KEY, get_config()['GITLAB_TOKEN'])
-git_repo_dir = get_config()['DEST_DIR']
+setting = Settings()
+exepted_token = make_hmac_signature(generate_secret_key(), setting.gitlab_token)
 
 
 whrouter = APIRouter
@@ -29,7 +28,7 @@ def webhook(requset: Request, response: Response) -> dict:
     try:
         response.headers["Content-Type"] = "application/json"
         response.status_code = 202
-        return git_pull(git_repo_dir)
+        return git_pull(setting.git_work_directory)
     except Exception as e:
         return {"Exception": e}
 

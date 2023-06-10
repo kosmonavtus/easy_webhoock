@@ -2,8 +2,8 @@ import hmac
 import secrets
 
 
-def make_hmac_signature(secret: bytes, token: str) -> str:
-    hmac_signature = hmac.new(secret, token.encode(), "sha256").hexdigest()
+def make_hmac_signature(secret: bytes, gitlab_token: str) -> str:
+    hmac_signature = hmac.new(secret, gitlab_token.encode(), "sha256").hexdigest()
     return hmac_signature
 
 
