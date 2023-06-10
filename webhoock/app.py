@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-from routes.api import whrouter
+from webhoock.routes.api import whrouter
 
 
 def easy_webhoock():

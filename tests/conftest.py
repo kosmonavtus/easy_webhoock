@@ -1,5 +1,14 @@
 import pytest
-from hmac_signatuer import generate_secret_key, make_hmac_signature, verify_hmac
+from webhoock.hmac_signatuer import generate_secret_key, make_hmac_signature, verify_hmac
+from fastapi.testclient import TestClient
+from webhoock.app import easy_webhoock
+
+app = easy_webhoock()
+
+@pytest.fixture
+def test_app():
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.fixture

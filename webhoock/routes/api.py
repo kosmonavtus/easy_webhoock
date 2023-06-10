@@ -3,11 +3,11 @@ from fastapi import APIRouter
 from fastapi import Request
 from fastapi import Response
 from fastapi import HTTPException
-from hmac_signatuer import verify_hmac
-from hmac_signatuer import generate_secret_key
-from hmac_signatuer import make_hmac_signature
-from gitsync import git_pull
-from config import Settings
+from webhoock.hmac_signatuer import verify_hmac
+from webhoock.hmac_signatuer import generate_secret_key
+from webhoock.hmac_signatuer import make_hmac_signature
+from webhoock.gitsync import git_pull
+from webhoock.config import Settings
 
 
 is_viewed = False
