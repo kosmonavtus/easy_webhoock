@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api import whrouter
+from routes.api import whrouter
 
 
 def easy_webhoock():
