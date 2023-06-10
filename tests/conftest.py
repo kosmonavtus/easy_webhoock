@@ -7,7 +7,7 @@ app = easy_webhoock()
 
 @pytest.fixture
 def test_app():
-    with TestClient(app) as client:
+    with TestClient(app, headers={"localhost": "127.0.0.1"}) as client:
         yield client
 
 

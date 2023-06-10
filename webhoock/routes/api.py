@@ -35,10 +35,9 @@ def webhook(requset: Request, response: Response) -> dict:
 
 
 @whrouter.get("/token")
-def get_token(request: Request) -> dict:
+def get_token() -> dict:
     global is_viewed
-    client_ip = request.client.host
-    if not is_viewed and client_ip == "127.0.0.1":
+    if not is_viewed:
         is_viewed = True
         return {"X-gitlab-Token": exepted_token}
     else:
