@@ -7,7 +7,7 @@ from app.config import get_config
 from hmac_signatuer import verify_hmac
 from hmac_signatuer import generate_secret_key
 from hmac_signatuer import make_hmac_signature
-from subprocess import run, STDOUT, PIPE
+from gitsync import git_pull
 
 
 is_viewed = False
@@ -27,12 +27,9 @@ def webhook(requset: Request, response: Response) -> dict:
     if not verify_hmac(received_token, exepted_token):
         raise HTTPException(status_code=http.HTTPStatus.UNAUTHORIZED, detail="Invalid token")
     try:
-        cmd = ["git", "pull"]
-        output = run(cmd, stdout=PIPE, stderr=STDOUT, text=True, cwd=git_repo_dir)
-        outlist = output.stdout.strip('\n').split('\n')
         response.headers["Content-Type"] = "application/json"
         response.status_code = 202
-        return {"Stdout": outlist, "Stderror": output.stderr}
+        return git_pull(git_repo_dir)
     except Exception as e:
         return {"Exception": e}
 
