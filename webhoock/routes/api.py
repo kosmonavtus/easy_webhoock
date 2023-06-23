@@ -26,11 +26,10 @@ def webhook(requset: Request, response: Response) -> dict:
     if not verify_hmac(received_token, exepted_token):
         raise HTTPException(status_code=http.HTTPStatus.UNAUTHORIZED, detail="Invalid token")
     try:
-        response.headers["Content-Type"] = "application/json"
         response.status_code = 202
         return git_pull(setting.git_work_directory)
     except Exception as e:
-        response.status_code = 500
+        response.status_code = 501
         return {"Exception": e}
 
 
