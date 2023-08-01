@@ -19,10 +19,10 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> bool:
         )
 
 
-def git_pull(git_repo_dir: str) -> dict:
-    cmd = ["git", "fetch", "origin", "main"]
+def git_pull() -> dict:
+    cmd = ["/usr/local/bin/git", "pull"]
     try:
-        output = run(cmd, stdout=PIPE, stderr=STDOUT, text=True, cwd=git_repo_dir)
+        output = run(cmd, stdout=PIPE, stderr=STDOUT, text=True, cwd=config.git_work_directory)
         return {"StatusCode": output.returncode}
     except (CalledProcessError, FileNotFoundError, PermissionError) as e:
         raise e
